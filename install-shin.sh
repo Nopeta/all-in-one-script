@@ -10,7 +10,7 @@ echo -e "${GREEN}Starting Install !${CLEAR}"
 
 # Setup /etc/sudoers for sudo without password prompt
 echo -e "${GREEN}Setup NOPASSWD for %staff ${CLEAR}"
-sudo grep -q '^%staff' /etc/sudoers || sudo sed -i '' 's/^%admin.*/&\n%staff          ALL = (ALL) NOPASSWD: ALL/' /etc/sudoers
+sudo grep -q '^%staff' /etc/sudoers || sudo sed -i "" 's/^%admin.*/&\n%staff          ALL = (ALL) NOPASSWD: ALL/' /etc/sudoers
 
 install-dev-tools() {
 
@@ -96,14 +96,8 @@ install-dev-software() {
     echo -e "${YELLOW}Install NVM${CLEAR}"
     brew install nvm
     mkdir ~/.nvm
-    touch .zshrc
-    echo 'local brew_path="/opt/homebrew/bin"' >>~/.zshrc
-    echo 'local brew_opt_path="/opt/homebrew/opt"' >>~/.zshrc
-    echo 'local nvm_path="$HOME/.nvm"' >>~/.zshrc
-    echo 'export PATH="${brew_path}:${PATH}"' >>~/.zshrc
-    echo 'export NMV_DIR="$HOME/.nvm"' >>~/.zshrc
-    echo '[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"' >>~/.zshrc
-    echo '[ -s "${brew_opt_path}/nvm/etc/bash_completion.d/nvm" ] && . "${brew_opt_path}/nvm/etc/bash_completion.d/nvm"' >>~/.zshrc
+    sudo grep -q '^local' ~/.zshrc || touch ~/.zshrc
+    sudo grep -q '^local' ~/.zshrc || echo 'local brew_path="/opt/homebrew/bin" \nlocal brew_opt_path="/opt/homebrew/opt" \nlocal nvm_path="$HOME/.nvm" \n\nexport PATH="${brew_path}:${PATH}"\nexport NMV_DIR="$HOME/.nvm" \n\n[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"\n[ -s "${brew_opt_path}/nvm/etc/bash_completion.d/nvm" ] && . "${brew_opt_path}/nvm/etc/bash_completion.d/nvm"' >>~/.zshrc
 
     ## Node
     echo -e "${YELLOW}Install Node${CLEAR}"
@@ -141,6 +135,10 @@ install-basic-tools-brew() {
     ## Zoom
     echo -e "${YELLOW}Install Zoom Slack${CLEAR}"
     brew install zoom
+
+    ## nano
+    echo -e "${YELLOW}Install nano${CLEAR}"
+    brew install nano
 
     ## AltTab 視窗切換
     echo -e "${YELLOW}Install AltTab${CLEAR}"
@@ -220,6 +218,11 @@ install-basic-tools-from-mas() {
     ## Amphetamine 休眠設定
     echo -e "${YELLOW}Install Amphetamine${CLEAR}"
     mas install 937984704
+
+    ## Unzip - RAR ZIP 7Z Unarchiver
+    echo -e "${YELLOW}Install Unzip - RAR ZIP 7Z Unarchiver"
+    mas install 1537056818
+
 }
 
 install-game() {
@@ -300,7 +303,7 @@ php-laravel-packages() {
     ## composer
     echo -e "${YELLOW}Install composer${CLEAR}"
     brew install composer
-    echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"' >>~/.zshrc
+    echo '\nexport PATH="$PATH:$HOME/.composer/vendor/bin"' >>~/.zshrc
 
     ## Laravel 全域安裝
     # echo -e "${YELLOW}Install Laravel${CLEAR}"
