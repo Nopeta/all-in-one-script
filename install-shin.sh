@@ -220,7 +220,7 @@ install-basic-tools-from-mas() {
     mas install 937984704
 
     ## Unzip - RAR ZIP 7Z Unarchiver
-    echo -e "${YELLOW}Install Unzip - RAR ZIP 7Z Unarchiver"
+    echo -e "${YELLOW}Install Unzip - RAR ZIP 7Z Unarchiver${CLEAR}"
     mas install 1537056818
 
 }
