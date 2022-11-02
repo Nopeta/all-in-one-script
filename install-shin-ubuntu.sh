@@ -20,7 +20,9 @@ install-dev-tools() {
     # sudo apt-get update
 
     ## 設定網路
+    echo -e "${YELLOW}Set Network Manager${CLEAR}"
     # cd etc/netplan
+    # sudo nano 00-installer-config.yaml
     sudo grep -q '^renderer:' etc/netplan/00-installer-config.yaml || echo '  renderer: NerworkManager' >>etc/netplan/00-installer-config.yaml
     netplan apply
 
@@ -32,34 +34,18 @@ install-dev-tools() {
     # echo -e "${YELLOW}Install Homebrew${CLEAR}"
     # sudo apt install build-essential git
 
-    # ## Visual Studio Code
-    # echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
-    # wget -O vscode_arm64.deb https://az764295.vo.msecnd.net/stable/d045a5eda657f4d7b676dedbfa7aab8207f8a075/code_1.72.2-1665612990_arm64.deb
-    # sudo dpkg -i ./vscode_arm64.deb
+    ## Visual Studio Code
+    echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
+    wget -O vscode_arm64.deb https://az764295.vo.msecnd.net/stable/d045a5eda657f4d7b676dedbfa7aab8207f8a075/code_1.72.2-1665612990_arm64.deb
+    sudo dpkg -i ./vscode_arm64.deb
 
-    # ## Vagrant
-    # echo -e "${YELLOW}Install Docker & Vagrant${CLEAR}"
-    # sudo apt install vagrant
+    ## Vagrant
+    echo -e "${YELLOW}Install Docker & Vagrant${CLEAR}"
+    sudo apt install vagrant
 
-    # ## iTerm2
-    # echo -e "${YELLOW}Install iTerm2${CLEAR}"
-    # brew install iterm2
-
-    # ## Appium
-    # echo -e "${YELLOW}Install Appium${CLEAR}"
-    # brew install appium
-
-    # ## ngrok
-    # echo -e "${YELLOW}Install ngrok${CLEAR}"
-    # brew install ngrok
-
-    # ## android-studio
-    # echo -e "${YELLOW}Install android-studio${CLEAR}"
-    # brew install --cask android-studio
-
-    # ## android-platform-tools (for adb usings)
-    # echo -e "${YELLOW}Install android-platform-tools${CLEAR}"
-    # brew install homebrew/cask/android-platform-tools
+    ## ngrok
+    echo -e "${YELLOW}Install ngrok${CLEAR}"
+    brew install ngrok
 
 }
 
