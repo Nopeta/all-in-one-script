@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #use this script need type "chmod u+x *.sh" first and then you run this script
 
+export NEEDRESTART_MODE=a
 # Text Color Variables
 GREEN='\033[32m'  # Green
 YELLOW='\033[33m' # YELLOW
@@ -11,13 +12,12 @@ echo -e "${GREEN}Starting Install !${CLEAR}"
 
 # Setup /etc/sudoers for sudo without password prompt
 # echo -e "${GREEN}Setup NOPASSWD for %staff ${CLEAR}"
-# sudo grep -q '^%staff' /etc/sudoers || sudo sed -i "" 's/^%admin.*/&\n%staff          ALL = (ALL) NOPASSWD: ALL/' /etc/sudoers
+# sudo grep -q '^yocat' /etc/sudoers || sudo echo 'yocat          ALL = (ALL) NOPASSWD: ALL/' >> /etc/sudoers
 
 install-dev-tools() {
-    # sudo apt update
-    # sudo apt list --upgradable
-    # sudo apt upgrade
-    # sudo apt-get update
+    sudo -E apt update
+    # sudo -E apt list --upgradable
+    sudo -E apt -y upgrade
 
     ## 設定網路
     echo -e "${YELLOW}Set Network Manager${CLEAR}"
@@ -28,45 +28,48 @@ install-dev-tools() {
 
     ## spice-vdagent spice-webdavd虛擬機共享目錄與剪貼簿
     echo -e "${YELLOW}Install Spice-vdagent Spice-webdavd${CLEAR}"
-    sudo apt install spice-vdagent spice-webdavd
-
-    # ## Homebrew
-    # echo -e "${YELLOW}Install Homebrew${CLEAR}"
-    # sudo apt install build-essential git
+    sudo -E apt install spice-vdagent spice-webdavd
 
     ## Visual Studio Code
     echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
     wget -O vscode_arm64.deb https://az764295.vo.msecnd.net/stable/d045a5eda657f4d7b676dedbfa7aab8207f8a075/code_1.72.2-1665612990_arm64.deb
-    sudo dpkg -i ./vscode_arm64.deb
+    # sudo dpkg -i ./vscode_arm64.deb
+    sudo -E apt install vscode_arm64.deb
 
     ## Vagrant
-    echo -e "${YELLOW}Install Docker & Vagrant${CLEAR}"
-    sudo apt install vagrant
+    echo -e "${YELLOW}Install Vagrant${CLEAR}"
+    sudo -E apt install vagrant -y
 
     ## ngrok
     echo -e "${YELLOW}Install ngrok${CLEAR}"
-    brew install ngrok
+    snap install ngrok -y
 
 }
 
 install-dev-software() {
 
-    ## NVM
+    ## NPM
+    echo -e "${YELLOW}Install NPM${CLEAR}"
+    sudo -E apt -y install npm
+
+    ##NVM
     echo -e "${YELLOW}Install NVM${CLEAR}"
-    brew install nvm
-    mkdir ~/.nvm
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+    source ~/.bashrc
 
     ## Node
     echo -e "${YELLOW}Install Node${CLEAR}"
     nvm install node
+    node --version
 
     ## nginx
     echo -e "${YELLOW}Install nginx${CLEAR}"
-    brew install nginx
+    sudo -E apt -y install nginx
+    sudo ufw allow 'Nginx HTTP'
 
-    ## nginx
-    echo -e "${YELLOW}Install nginx${CLEAR}"
-    sudo apt install mosquitto
+    ## mosquitto
+    echo -e "${YELLOW}Install mosquitto${CLEAR}"
+    sudo -E apt -y install mosquitto
 
     ## git
     echo -e "${YELLOW}Set GIT${CLEAR}"
@@ -75,87 +78,64 @@ install-dev-software() {
 
     ## yarn
     echo -e "${YELLOW}Install yarn${CLEAR}"
-    brew install yarn
+    npm install -g -y yarn
 
     ## pnpm
     echo -e "${YELLOW}Install pnpm${CLEAR}"
-    brew install pnpm
+    npm install -g -y pnpm
 
 }
 
-install-basic-tools-brew() {
+install-basic-tools() {
+    ## Fire Fox
+    echo -e "${YELLOW}Install Fire Fox${CLEAR}"
+
+    sudo -E apt install firefox
+
     ## Google Chrome
     echo -e "${YELLOW}Install Google Chrome${CLEAR}"
-    brew install google-chrome
-
-    ## Zoom
-    echo -e "${YELLOW}Install Zoom Slack${CLEAR}"
-    brew install zoom
-
-    ## Discord
-    echo -e "${YELLOW}Install Discord${CLEAR}"
-    brew install --cask discord
-
-    ## AnyDesk
-    echo -e "${YELLOW}Install AnyDesk${CLEAR}"
-    brew install anydesk
-
+    sudo -E apt install chromium-browser
 }
 
-install-other() {
-    ## Numbers
-    echo -e "${YELLOW}Install Numbers${CLEAR}"
-    mas install 409203825
-
-}
-
-check-by-doctor() {
-    echo -e "${GREEN}Checking by Brew Doctor!${CLEAR}"
-    dpkg -i
-}
-
-php-laravel-packages() {
-
+php-packages() {
     ## php
     echo -e "${YELLOW}Install php${CLEAR}"
-    brew install php
-
-    ## mysql
-    echo -e "${YELLOW}Install mysql${CLEAR}"
-    apt-cache search mysql-server
-
-    ## start mysql
-    # echo -e "${YELLOW}Starting mysql${CLEAR}"
-    # brew services start mysql
+    sudo -E apt -y install php8.1-cli
+    sudo -E apt -y install php-cli unzip
+    curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+    HASH=$(curl -sS https://composer.github.io/installer.sig)
+    php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 
     ## composer
     echo -e "${YELLOW}Install composer${CLEAR}"
-    brew install composer
-    echo '\nexport PATH="$PATH:$HOME/.composer/vendor/bin"' >>~/.zshrc
+    sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-    ## Laravel 全域安裝
-    # echo -e "${YELLOW}Install Laravel${CLEAR}"
-    # composer global require "laravel/installer"
+    ## mysql
+    echo -e "${YELLOW}Install mysql${CLEAR}"
+    sudo -E apt -y install mysql-server
+}
+
+check-by-dpkg() {
+    echo -e "${GREEN}Checking !${CLEAR}"
+    dpkg --audit
 }
 
 install-all() {
     echo -e "${GREEN}Starting Install dev-tools !${CLEAR}"
     install-dev-tools
 
-    # echo -e "${GREEN}Starting install dev-software !${CLEAR}"
-    # install-dev-software
+    echo -e "${GREEN}Starting install dev-software !${CLEAR}"
+    install-dev-software
 
-    # echo -e "${GREEN}Starting Install basic-tools-from-brew !${CLEAR}"
-    # install-basic-tools-from-brew
+    echo -e "${GREEN}Starting Install basic-tools !${CLEAR}"
+    install-basic-tools
 
-    # echo -e "${GREEN}Starting Install php-laravel-packages !${CLEAR}"
-    # php-laravel-packages
+    echo -e "${GREEN}Starting Install php-packages !${CLEAR}"
+    php-packages
 
-    # echo -e "${GREEN}Starting Install Other !${CLEAR}"
-    # install-other
+    echo -e "${GREEN}Starting Check !${CLEAR}"
+    check-by-dpkg
 
-    # echo -e "${GREEN}Starting Check !${CLEAR}"
-    # check-by-doctor
 }
 
 install-all
