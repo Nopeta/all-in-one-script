@@ -64,18 +64,6 @@ install-dev-tools() {
 }
 
 install-dev-software() {
-    ## Python 3.x
-    echo -e "${YELLOW}Install python-3.x${CLEAR}"
-    brew install python
-
-    # ## watchman
-    # echo -e "${YELLOW}Install watchman ${CLEAR}"
-    # brew install watchman
-
-    ## MongoDB
-    echo -e "${YELLOW}Install MongoDB ${CLEAR}"
-    brew tap mongodb/brew
-    brew install mongodb-community@5.0
 
     ## NVM
     echo -e "${YELLOW}Install NVM${CLEAR}"
@@ -89,6 +77,10 @@ install-dev-software() {
     ## nginx
     echo -e "${YELLOW}Install nginx${CLEAR}"
     brew install nginx
+
+    ## nginx
+    echo -e "${YELLOW}Install nginx${CLEAR}"
+    sudo apt install mosquitto
 
     ## git
     echo -e "${YELLOW}Set GIT${CLEAR}"
