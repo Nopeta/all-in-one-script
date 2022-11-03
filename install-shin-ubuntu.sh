@@ -12,27 +12,13 @@ echo -e "${GREEN}Starting Install !${CLEAR}"
 
 install-dev-tools() {
 
-    ## 設定網路
     cd
-    # echo -e "${YELLOW}Set Network Manager${CLEAR}"
-    # cd etc/netplan
-    # sudo nano 00-installer-config.yaml
-    # sudo grep -q '^  renderer:' /etc/netplan/00-installer-config.yaml || sudo chmod 777 /etc/netplan/00-installer-config.yaml && echo '  renderer: NetworkManager' >>/etc/netplan/00-installer-config.yaml && sudo chmod 644 /etc/netplan/00-installer-config.yaml
-    # sudo netplan apply
 
     echo -e "${YELLOW}Set apt update${CLEAR}"
     sudo -E apt update
 
     echo -e "${YELLOW}Set apt upgrade${CLEAR}"
     sudo -E apt -y upgrade
-
-    ## spice-vdagent虛擬機共享剪貼簿 與共享目錄
-    # echo -e "${YELLOW}Install Spice-vdagent ${CLEAR}"
-    # sudo -E apt install spice-vdagent
-    # sudo mkdir sharedir
-    # sudo mount -t 9p -o trans=virtio share sharedir -oversion=9p2000.L
-    # sudo gpasswd -a yocat dialout
-    # sudo chmod g+x ./*.sh
 
     ## Visual Studio Code
     echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
