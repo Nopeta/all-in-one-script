@@ -62,7 +62,7 @@ install-dev-tools() {
 
     ## ngrok
     echo -e "${YELLOW}Install ngrok${CLEAR}"
-    snap install -y ngrok
+    sudo snap install ngrok
 }
 
 install-dev-software() {
@@ -70,16 +70,10 @@ install-dev-software() {
     echo -e "${YELLOW}Install NPM${CLEAR}"
     sudo -E apt -y install npm
 
-    ##NVM
-    echo -e "${YELLOW}Install NVM${CLEAR}"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-    source ~/.bashrc
-    nvm --version
-
     ## Node
     echo -e "${YELLOW}Install Node${CLEAR}"
-    nvm install node
-    node --version
+    sudo curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+    sudo apt install -y nodejs
 
     ## Pip3
     echo -e "${YELLOW}Set Pip3${CLEAR}"
