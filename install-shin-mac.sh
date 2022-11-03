@@ -96,7 +96,7 @@ install-dev-software() {
     echo -e "${YELLOW}Install NVM${CLEAR}"
     brew install nvm
     mkdir ~/.nvm
-    sudo grep -q '^local' ~/.zshrc || touch ~/.zshrc
+    touch ~/.zshrc
     sudo grep -q '^local' ~/.zshrc || echo 'local brew_path="/opt/homebrew/bin" \nlocal brew_opt_path="/opt/homebrew/opt" \nlocal nvm_path="$HOME/.nvm" \n\nexport PATH="${brew_path}:${PATH}"\nexport NMV_DIR="$HOME/.nvm" \n\n[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"\n[ -s "${brew_opt_path}/nvm/etc/bash_completion.d/nvm" ] && . "${brew_opt_path}/nvm/etc/bash_completion.d/nvm"' >>~/.zshrc
 
     ## Node
