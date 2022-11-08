@@ -65,7 +65,7 @@ install-dev-software() {
     ) && \. "$NVM_DIR/nvm.sh"
     echo 'export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >>~./bashrc
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >>~/.bashrc
     source ~/.bashrc
     command -v nvm
 
@@ -76,6 +76,10 @@ install-dev-software() {
     ## Pip3
     echo -e "${YELLOW}Set Pip3${CLEAR}"
     sudo -E apt -y install python3-pip
+
+    ## venv 模擬環境
+    echo -e "${YELLOW}Set venv${CLEAR}"
+    sudo -E apt -y install python3-venv
 
     ## nginx
     echo -e "${YELLOW}Install nginx${CLEAR}"
