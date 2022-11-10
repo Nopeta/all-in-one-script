@@ -42,6 +42,10 @@ install-dev-tools() {
     ## Visual Studio Code
     echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
     brew install visual-studio-code
+    cat <<EOF >>~/.zprofile
+# Add Visual Studio Code (code)
+export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+EOF
 
     ## mas-cli
     ## A simple command line interface for the Mac App Store. Designed for scripting and automation.
@@ -88,9 +92,9 @@ install-dev-software() {
     # brew install watchman
 
     ## MongoDB
-    echo -e "${YELLOW}Install MongoDB ${CLEAR}"
-    brew tap mongodb/brew
-    brew install mongodb-community@5.0
+    # echo -e "${YELLOW}Install MongoDB ${CLEAR}"
+    # brew tap mongodb/brew
+    # brew install mongodb-community@5.0
 
     ## NVM
     echo -e "${YELLOW}Install NVM${CLEAR}"
@@ -249,6 +253,30 @@ install-office() {
     mas install 1445515197
 }
 
+install-esp32() {
+    ## cmake ninja dfu-util
+    echo -e "${YELLOW}Install cmake ninja dfu-util${CLEAR}"
+    brew install cmake ninja dfu-util
+
+    ## ccache 加速編譯
+    echo -e "${YELLOW}Install ccache${CLEAR}"
+    brew install ccache
+
+    ## ESP-IDF 軟件庫文件
+    echo -e "${YELLOW}Install ESP-IDF${CLEAR}"
+    mkdir -p ~/esp
+    cd ~/esp
+    git clone --recursive https://github.com/espressif/esp-idf.git
+    cd ~/esp/esp-idf
+    ./install.sh esp32
+    . $HOME/esp/esp-idf/export.sh
+    # 經常運行 ESP-IDF，可以為執行 export.sh 創建一个别名
+    # echo 'alias get_idf='. $HOME/esp/esp-idf/export.sh'' >>~/.zprofile
+    # source ~/.zprofile
+    #現在您可以在任何終端窗口中運行 get_idf 來設置或刷新 esp-idf 環境。
+    # 不建議直接將 export.sh 添加到 shell 的配置文件。這樣做會導致在每個終端會話中都激活 IDF 虛擬環境（包括無需使用 IDF 的會話）。這違背了使用虛擬環境的目的，還可能影響其他軟件的使用。
+}
+
 install-video-clip() {
     ## Final Cut Pro
     echo -e "${YELLOW}Install Final Cut Pro${CLEAR}"
@@ -337,6 +365,9 @@ install-all() {
 
     echo -e "${GREEN}Starting Install Office !${CLEAR}"
     install-office
+
+    # echo -e "${GREEN}Starting Install esp32 !${CLEAR}"
+    # install-esp32
 
     echo -e "${GREEN}Starting Check !${CLEAR}"
     check-by-doctor
