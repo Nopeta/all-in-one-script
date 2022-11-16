@@ -428,9 +428,6 @@ install-all() {
     echo -e "${GREEN}Starting Install Office !${CLEAR}"
     install-office
 
-    # echo -e "${GREEN}Starting Install esp32 !${CLEAR}"
-    # install-esp32
-
     echo -e "${GREEN}Starting Check !${CLEAR}"
     check-by-doctor
 }
