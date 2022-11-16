@@ -86,6 +86,7 @@ install-dev-software() {
     ## Python 3.x
     echo -e "${YELLOW}Install python-3.x${CLEAR}"
     brew install python
+    echo '# Setting PATH for Python 3.10 \n# The original version is saved in .zprofile.pysave \nPATH="/Library/Frameworks/Python.framework/Versions/3.10/bin:${PATH}" \nexport PATH' >>~/.zprofile
 
     # ## watchman
     # echo -e "${YELLOW}Install watchman ${CLEAR}"
@@ -96,6 +97,57 @@ install-dev-software() {
     # brew tap mongodb/brew
     # brew install mongodb-community@5.0
 
+    ## nginx
+    echo -e "${YELLOW}Install nginx${CLEAR}"
+    brew install nginx
+
+    ## git
+    echo -e "${YELLOW}Install git${CLEAR}"
+    brew install git
+    git config --global user.email "noiecat128@gmail.com"
+    git config --global user.name "Shin"
+    git config --global user.signingkey "ssh-ed25519 添加自己的ed25519公鑰"
+    # Using SSH Signing Your Commit
+    echo -e "${YELLOW}Set git ssh sign${CLEAR}"
+    git config --global gpg.ssh.allowedSignersFile "$HOME/.ssh/allowed_signers"
+    git config --global gpg.format "ssh"
+    git config --global core.excludesfile "/Users/cat/.gitignore_global"
+    git config --global commit.gpgsign true
+    git config --global tag.gpgsign true
+    touch ~/.ssh/allowed_signersaaa
+    echo 'noiecat128@gmail.com ssh-ed25519 添加自己的ed25519公鑰' >>~/.ssh/allowed_signersaaa
+    echo 'eval "$(ssh-agent -s)" \nssh-add ~/.ssh/id_ed25519' >>~/.zprofile
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_ed25519
+}
+
+setup-zsh() {
+    echo -e "${YELLOW}Install oh-my-zsh${CLEAR}"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    echo -e "${YELLOW}Set Z-Shell to default shell${CLEAR}"
+    sudo chsh -s $(which zsh) $(whoami)
+
+    echo -e "${YELLOW}Setup oh-my-zsh${CLEAR}"
+
+    echo -e "${YELLOW}Install theme powerlevel10k${CLEAR}"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    sed -i '' 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"powerlevel10k\/powerlevel10k\"/' ~/.zshrc
+
+    echo -e "${YELLOW}Install plugin zsh-completions${CLEAR}"
+    git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+    sed -i '' 's/source $ZSH\/oh-my-zsh.sh/fpath\+=\${ZSH_CUSTOM\:-\${ZSH\:-~\/.oh-my-zsh}\/custom}\/plugins\/zsh-completions\/src\nZSH_DISABLE_COMPFIX=\"true\"\nsource $ZSH\/oh-my-zsh.sh/' ~/.zshrc
+
+    echo -e "${YELLOW}Install plugin zsh-syntax-highlighting${CLEAR}"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    sed -i '' 's/plugins=(git/plugins=(git zsh-syntax-highlighting/' ~/.zshrc
+
+    echo -e "${YELLOW}Install default plugins for python and docker${CLEAR}"
+    sed -i '' 's/plugins=(git/plugins=(git python pip docker docker-compose/' ~/.zshrc
+}
+
+install-node() {
+
     ## NVM
     echo -e "${YELLOW}Install NVM${CLEAR}"
     brew install nvm
@@ -103,19 +155,23 @@ install-dev-software() {
     touch ~/.zshrc
     sudo grep -q '^local' ~/.zshrc || echo 'local brew_path="/opt/homebrew/bin" \nlocal brew_opt_path="/opt/homebrew/opt" \nlocal nvm_path="$HOME/.nvm" \n\nexport PATH="${brew_path}:${PATH}"\nexport NMV_DIR="$HOME/.nvm" \n\n[ -s "${brew_opt_path}/nvm/nvm.sh" ] && . "${brew_opt_path}/nvm/nvm.sh"\n[ -s "${brew_opt_path}/nvm/etc/bash_completion.d/nvm" ] && . "${brew_opt_path}/nvm/etc/bash_completion.d/nvm"' >>~/.zshrc
 
-    ## Node
-    echo -e "${YELLOW}Install Node${CLEAR}"
-    nvm install node
+    echo -e "${YELLOW}Install latest lts version${CLEAR}"
+    nvm install --lts
 
-    ## nginx
-    echo -e "${YELLOW}Install nginx${CLEAR}"
-    brew install nginx
+    echo -e "${YELLOW}Enable corepack for yarn and pnpm${CLEAR}"
+    corepack enable
 
-    ## git
-    echo -e "${YELLOW}Install GIT${CLEAR}"
-    brew install git
-    git config --global user.email "noiecat128@gmail.com"
-    git config --global user.name "Shin"
+    # echo -e "${YELLOW}Add nvm config to zshrc${CLEAR}"
+    # echo "export NVM_DIR=\"\$([ -z \"\${XDG_CONFIG_HOME-}\" ] && printf %s \"\${HOME}/.nvm\" || printf %s \"\${XDG_CONFIG_HOME}/nvm\")\"" >>~/.zshrc
+    # echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\" # This loads nvm" >>~/.zshrc
+    # echo "" >>~/.zshrc
+
+    echo -e "${YELLOW}Install default node npm nvm yarn plugin for oh-my-zsh${CLEAR}"
+    sed -i '' 's/plugins=(git/plugins=(git node npm nvm yarn/' ~/.zshrc
+
+    # ## Node
+    # echo -e "${YELLOW}Install Node${CLEAR}"
+    # nvm install node
 
     ## yarn
     echo -e "${YELLOW}Install yarn${CLEAR}"
@@ -124,7 +180,6 @@ install-dev-software() {
     ## pnpm
     echo -e "${YELLOW}Install pnpm${CLEAR}"
     brew install pnpm
-
 }
 
 install-basic-tools-brew() {
@@ -253,30 +308,6 @@ install-office() {
     mas install 1445515197
 }
 
-install-esp32() {
-    ## cmake ninja dfu-util
-    echo -e "${YELLOW}Install cmake ninja dfu-util${CLEAR}"
-    brew install cmake ninja dfu-util
-
-    ## ccache 加速編譯
-    echo -e "${YELLOW}Install ccache${CLEAR}"
-    brew install ccache
-
-    ## ESP-IDF 軟件庫文件
-    echo -e "${YELLOW}Install ESP-IDF${CLEAR}"
-    mkdir -p ~/esp
-    cd ~/esp
-    git clone --recursive https://github.com/espressif/esp-idf.git
-    cd ~/esp/esp-idf
-    ./install.sh esp32
-    . $HOME/esp/esp-idf/export.sh
-    # 經常運行 ESP-IDF，可以為執行 export.sh 創建一个别名
-    # echo 'alias get_idf='. $HOME/esp/esp-idf/export.sh'' >>~/.zprofile
-    # source ~/.zprofile
-    #現在您可以在任何終端窗口中運行 get_idf 來設置或刷新 esp-idf 環境。
-    # 不建議直接將 export.sh 添加到 shell 的配置文件。這樣做會導致在每個終端會話中都激活 IDF 虛擬環境（包括無需使用 IDF 的會話）。這違背了使用虛擬環境的目的，還可能影響其他軟件的使用。
-}
-
 install-video-clip() {
     ## Final Cut Pro
     echo -e "${YELLOW}Install Final Cut Pro${CLEAR}"
@@ -309,11 +340,6 @@ install-paint() {
     brew install --cask blender
 }
 
-check-by-doctor() {
-    echo -e "${GREEN}Checking by Brew Doctor!${CLEAR}"
-    brew doctor
-}
-
 php-laravel-packages() {
 
     ## php
@@ -338,9 +364,45 @@ php-laravel-packages() {
     # composer global require "laravel/installer"
 }
 
+setup-zsh() {
+    echo -e "${YELLOW}Install oh-my-zsh${CLEAR}"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+    echo -e "${YELLOW}Set Z-Shell to default shell${CLEAR}"
+    sudo chsh -s $(which zsh) $(whoami)
+
+    echo -e "${YELLOW}Setup oh-my-zsh${CLEAR}"
+
+    echo -e "${YELLOW}Install theme powerlevel10k${CLEAR}"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    sed -i '' 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"powerlevel10k\/powerlevel10k\"/' ~/.zshrc
+
+    echo -e "${YELLOW}Install plugin zsh-completions${CLEAR}"
+    git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+    sed -i '' 's/source $ZSH\/oh-my-zsh.sh/fpath\+=\${ZSH_CUSTOM\:-\${ZSH\:-~\/.oh-my-zsh}\/custom}\/plugins\/zsh-completions\/src\nZSH_DISABLE_COMPFIX=\"true\"\nsource $ZSH\/oh-my-zsh.sh/' ~/.zshrc
+
+    echo -e "${YELLOW}Install plugin zsh-syntax-highlighting${CLEAR}"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    sed -i '' 's/plugins=(git/plugins=(git zsh-syntax-highlighting/' ~/.zshrc
+
+    echo -e "${YELLOW}Install default plugins for python and docker${CLEAR}"
+    sed -i '' 's/plugins=(git/plugins=(git python pip docker docker-compose/' ~/.zshrc
+}
+
+check-by-doctor() {
+    echo -e "${GREEN}Checking by Brew Doctor!${CLEAR}"
+    brew doctor
+}
+
 install-all() {
     echo -e "${GREEN}Starting Install dev-tools !${CLEAR}"
     install-dev-tools
+
+    echo -e "${GREEN}Setup Z-Shell${CLEAR}"
+    setup-zsh
+
+    echo -e "${GREEN}Install Node.js${CLEAR}"
+    install-node
 
     echo -e "${GREEN}Starting install dev-software !${CLEAR}"
     install-dev-software
