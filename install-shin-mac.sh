@@ -64,21 +64,21 @@ EOF
     echo -e "${YELLOW}Install iTerm2${CLEAR}"
     brew install iterm2
 
-    ## Appium
-    echo -e "${YELLOW}Install Appium${CLEAR}"
-    brew install appium
+    # ## Appium
+    # echo -e "${YELLOW}Install Appium${CLEAR}"
+    # brew install appium
 
     ## ngrok
     echo -e "${YELLOW}Install ngrok${CLEAR}"
     brew install ngrok
 
-    ## android-studio
-    echo -e "${YELLOW}Install android-studio${CLEAR}"
-    brew install --cask android-studio
+    # ## android-studio
+    # echo -e "${YELLOW}Install android-studio${CLEAR}"
+    # brew install --cask android-studio
 
-    ## android-platform-tools (for adb usings)
-    echo -e "${YELLOW}Install android-platform-tools${CLEAR}"
-    brew install homebrew/cask/android-platform-tools
+    # ## android-platform-tools (for adb usings)
+    # echo -e "${YELLOW}Install android-platform-tools${CLEAR}"
+    # brew install homebrew/cask/android-platform-tools
 
 }
 
@@ -173,13 +173,13 @@ install-node() {
     # echo -e "${YELLOW}Install Node${CLEAR}"
     # nvm install node
 
-    ## yarn
-    echo -e "${YELLOW}Install yarn${CLEAR}"
-    brew install yarn
+    # ## yarn
+    # echo -e "${YELLOW}Install yarn${CLEAR}"
+    # brew install yarn
 
-    ## pnpm
-    echo -e "${YELLOW}Install pnpm${CLEAR}"
-    brew install pnpm
+    # ## pnpm
+    # echo -e "${YELLOW}Install pnpm${CLEAR}"
+    # brew install pnpm
 }
 
 install-basic-tools-brew() {
