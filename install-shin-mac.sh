@@ -112,6 +112,7 @@ install-dev-software() {
     git config --global gpg.ssh.allowedSignersFile "$HOME/.ssh/allowed_signers"
     git config --global gpg.format "ssh"
     git config --global core.excludesfile "/Users/cat/.gitignore_global"
+    git config --global core.editor "code --wait"
     git config --global commit.gpgsign true
     git config --global tag.gpgsign true
     touch ~/.ssh/allowed_signersaaa
