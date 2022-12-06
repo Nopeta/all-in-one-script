@@ -216,10 +216,6 @@ install-basic-tools-brew() {
     echo -e "${YELLOW}Install MonitorControl ${CLEAR}"
     brew install --cask monitorcontrol
 
-    ## hiddenbar
-    echo -e "${YELLOW}Install hiddenbar ${CLEAR}"
-    brew install --cask hiddenbar
-
     # ## Clipy 剪貼簿（純文字）
     # echo -e "${YELLOW}Install Clipy ${CLEAR}"
     # brew install --cask clipy
@@ -252,6 +248,10 @@ install-basic-tools-brew() {
     echo -e "${YELLOW}Install CheatSheet${CLEAR}"
     brew install --cask cheatsheet
 
+    ## fliqlo
+    echo -e "${YELLOW}Install fliqlo${CLEAR}"
+    brew install --cask fliqlo
+
 }
 
 install-basic-tools-from-mas() {
@@ -282,6 +282,18 @@ install-basic-tools-from-mas() {
     ## Unzip - RAR ZIP 7Z Unarchiver
     echo -e "${YELLOW}Install Unzip - RAR ZIP 7Z Unarchiver${CLEAR}"
     mas install 1537056818
+
+    ## hiddenbar
+    echo -e "${YELLOW}Install hiddenbar ${CLEAR}"
+    mas install 1452453066
+
+    ## Bears 可愛的倒數計時
+    echo -e "${YELLOW}Install Bears ${CLEAR}"
+    mas install 1536711520
+
+    ## Flow 番茄鐘
+    echo -e "${YELLOW}Install Flow ${CLEAR}"
+    mas install 1423210932
 
 }
 
