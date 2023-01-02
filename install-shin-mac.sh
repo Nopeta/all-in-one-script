@@ -64,6 +64,10 @@ EOF
     echo -e "${YELLOW}Install iTerm2${CLEAR}"
     brew install iterm2
 
+    ## Warp
+    echo -e "${YELLOW}Install Warp${CLEAR}"
+    brew install --cask warp
+
     # ## Appium
     # echo -e "${YELLOW}Install Appium${CLEAR}"
     # brew install appium
@@ -184,9 +188,9 @@ install-node() {
 }
 
 install-basic-tools-brew() {
-    ## Google Chrome
-    echo -e "${YELLOW}Install Google Chrome${CLEAR}"
-    brew install google-chrome
+    # ## Google Chrome
+    # echo -e "${YELLOW}Install Google Chrome${CLEAR}"
+    # brew install google-chrome
 
     ## Edge
     echo -e "${YELLOW}Install Edge${CLEAR}"
