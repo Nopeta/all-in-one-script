@@ -256,6 +256,10 @@ install-basic-tools-brew() {
     echo -e "${YELLOW}Install fliqlo${CLEAR}"
     brew install --cask fliqlo
 
+    ## AIDente
+    echo -e "${YELLOW}Install AIDente{CLEAR}"
+    brew install --cask aldente
+
 }
 
 install-basic-tools-from-mas() {
