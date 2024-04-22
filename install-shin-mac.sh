@@ -39,7 +39,7 @@ install-dev-tools() {
     eval "$(/opt/homebrew/bin/brew shellenv)"
     brew update
 
-    ## Visual Studio Code
+    ## Visual Studio Code for M1 mac
     echo -e "${YELLOW}Install Visual Studio Code${CLEAR}"
     brew install visual-studio-code
     cat <<EOF >>~/.zprofile
@@ -213,8 +213,12 @@ install-basic-tools-brew() {
     brew install --cask itsycal
 
     ## rectangle 畫面分割
-    echo -e "${YELLOW}Install Rectangle ${CLEAR}"
-    brew install --cask rectangle
+    # echo -e "${YELLOW}Install Rectangle ${CLEAR}"
+    # brew install --cask rectangle
+
+    ## Raycast AI
+    echo -e "${YELLOW}Install Raycast ${CLEAR}"
+    brew install --cask raycast
 
     ## MonitorControl 多螢幕亮度分開調整
     echo -e "${YELLOW}Install MonitorControl ${CLEAR}"
@@ -313,6 +317,10 @@ install-game() {
     ## FF14
     echo -e "${YELLOW}Install XIV on Mac${CLEAR}"
     brew install --cask xiv-on-mac
+
+    ## Ｗhisky 可以使用directX 12遊玩遊戲的工具
+    # echo -e "${YELLOW}Install XIV on Mac${CLEAR}"
+    # brew install whisky
 }
 
 install-office() {
