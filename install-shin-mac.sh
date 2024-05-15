@@ -279,9 +279,9 @@ install-basic-tools-from-mas() {
     echo -e "${YELLOW}Install Run Cat${CLEAR}"
     mas install 1429033973
 
-    ## Usage
-    echo -e "${YELLOW}Install Usage${CLEAR}"
-    mas install 1561788435
+    ## Usage --2024/05/15 RunCat也有相同功能
+    # echo -e "${YELLOW}Install Usage${CLEAR}"
+    # mas install 1561788435
 
     ## Horo 計時器
     echo -e "${YELLOW}Install Horo${CLEAR}"
